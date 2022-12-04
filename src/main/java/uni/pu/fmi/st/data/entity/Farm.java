@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -16,5 +17,6 @@ public class Farm extends AbstractEntity
     private String name;
     private String address;
     @ManyToOne
+    @NotNull(message = "Изберете управител!")
     private User manager;
 }

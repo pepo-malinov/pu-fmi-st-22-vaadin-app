@@ -85,7 +85,7 @@ public class OwnerView extends VerticalLayout
             editButton.setEnabled(value != null);
             removeButton.setEnabled(value != null);
             addFarm.setEnabled(value != null);
-            farmGrid.refreshGrid(farmService.findByOwner(value));
+            refreshFarmGridData();
         });
         add(grid);
     }
@@ -158,20 +158,26 @@ public class OwnerView extends VerticalLayout
     private void openFarmForm(Farm farm)
     {
         final Dialog dialog = new Dialog();
-        final FarmForm ownerForm = new FarmForm(farm, userService);
-        ownerForm.addCancelClickListener(closeL -> dialog.close());
-        ownerForm.addSaveClickListener(saveL -> {
-            /*if(ownerForm.isSaved()){
-                ownerService.update(farm);
+        final FarmForm farmForm = new FarmForm(farm, userService);
+        farmForm.addCancelClickListener(closeL -> dialog.close());
+        farmForm.addSaveClickListener(saveL -> {
+            if(farmForm.isSaved()){
+                farmService.update(farm);
                 dialog.close();
-                refreshGridData();
-            }*/
+                refreshFarmGridData();
+            }
         });
-        dialog.add(ownerForm);
+        dialog.add(farmForm);
         dialog.setHeight("450px");
         dialog.setWidth("300px");
         dialog.setCloseOnEsc(true);
         dialog.setCloseOnOutsideClick(true);
         dialog.open();
+    }
+
+
+    private void refreshFarmGridData()
+    {
+        farmGrid.refreshGrid(farmService.findByOwner(grid.asSingleSelect().getValue()));
     }
 }
